@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Menu, X, ChevronRight } from 'lucide-react'
 import { navigate, scrollToSection } from '@/lib/router'
 import { useModals } from '@/lib/modal-context'
+import { BrandLogo } from '@/components/brand-logo'
 import * as React from 'react'
 
 const links = [
@@ -16,14 +17,7 @@ const links = [
 ]
 
 function NavbarLogo({ mobile = false }: { mobile?: boolean }) {
-  return (
-    <img
-      src="/codagentic-logo.png"
-      alt="CodAgentic"
-      className={mobile ? 'h-9 w-auto object-contain' : 'h-11 w-auto object-contain'}
-      draggable={false}
-    />
-  )
+  return <BrandLogo size={mobile ? 30 : 36} />
 }
 
 export function SiteNav() {
@@ -88,7 +82,7 @@ export function SiteNav() {
         href="#top"
         onClick={handleLogoClick}
         className="absolute top-1/2 left-[max(1.5rem,calc((100vw-80rem)/2))] -translate-y-1/2 transition-opacity hover:opacity-90 md:left-[max(3rem,calc((100vw-80rem)/2))]"
-        aria-label="CodAgentic home"
+        aria-label="VibeAgentic home"
       >
         <NavbarLogo />
       </a>
@@ -147,7 +141,7 @@ export function SiteNav() {
                 setOpen(false)
               }}
               className="flex items-center"
-              aria-label="CodAgentic home"
+              aria-label="VibeAgentic home"
             >
               <NavbarLogo mobile />
             </a>

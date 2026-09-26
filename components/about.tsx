@@ -32,7 +32,7 @@ export function About() {
             <span className="gradient-brand-text">We build systems that work.</span>
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-            CodAgentic AI is a team of software engineers, AI researchers, and automation specialists.
+            VibeAgentic AI is a team of software engineers, AI researchers, and automation specialists.
             We turn complex artificial intelligence into simple, powerful tools that deliver measurable growth.
           </p>
         </Reveal>

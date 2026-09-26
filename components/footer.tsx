@@ -2,6 +2,7 @@
 
 import { navigate, scrollToSection } from '@/lib/router'
 import { Mail, Phone, MapPin } from 'lucide-react'
+import { BrandLogo } from '@/components/brand-logo'
 
 const links = [
   { href: '#services', label: 'Services' },
@@ -42,7 +43,7 @@ export function Footer() {
             onClick={handleLogoClick}
             className="transition-opacity hover:opacity-90 w-fit block cursor-pointer"
           >
-            <img src="/codagentic-logo.png" alt="CodAgentic AI" className="h-7 w-auto select-none" />
+            <BrandLogo size={28} />
           </a>
 
           <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-8 gap-y-2">
@@ -65,11 +66,11 @@ export function Footer() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm font-medium text-foreground">
           <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
             <a
-              href="mailto:info@codagenticai.com"
+              href="mailto:vibeagenticai@gmail.com"
               className="inline-flex items-center gap-2 text-foreground/90 transition-colors duration-300 hover:text-cyan-brand"
             >
               <Mail className="size-4 text-cyan-brand shrink-0" />
-              <span><strong className="text-cyan-brand">Email:</strong> info@codagenticai.com</span>
+              <span><strong className="text-cyan-brand">Email:</strong> vibeagenticai@gmail.com</span>
             </a>
 
             <a
@@ -91,7 +92,7 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs font-medium text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} CodAgentic AI. All rights reserved.
+            &copy; {new Date().getFullYear()} VibeAgentic AI. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <span 

@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Check, Calendar, AlertCircle } from 'lucide-react'
+import { X, Check, Calendar, AlertCircle, Loader2 } from 'lucide-react'
 import { useModals } from '@/lib/modal-context'
+import { sendForm, CONTACT_EMAIL } from '@/lib/send-form'
 
 const inputBaseClass =
   'rounded-xl border bg-[#06101c] px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/45 transition-all duration-300 focus:bg-[#091626] focus:outline-none w-full'
@@ -20,6 +21,8 @@ export function ModalManager() {
   } = useModals()
 
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -54,6 +57,8 @@ export function ModalManager() {
 
   useEffect(() => {
     setSubmitted(false)
+    setSending(false)
+    setSendError('')
     setFormData({
       name: '',
       email: '',
@@ -108,6 +113,19 @@ export function ModalManager() {
     else if (field === 'date') setErrors((prev) => ({ ...prev, date: validateDate(formData.date) }))
   }
 
+  const submit = async (subject: string, fields: Record<string, string>) => {
+    setSending(true)
+    setSendError('')
+    try {
+      await sendForm(subject, fields)
+      setSubmitted(true)
+    } catch {
+      setSendError(`Something went wrong. Please try again or email us at ${CONTACT_EMAIL}.`)
+    } finally {
+      setSending(false)
+    }
+  }
+
   const handleStartProjectSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const nameErr = validateName(formData.name)
@@ -118,7 +136,14 @@ export function ModalManager() {
     setErrors((prev) => ({ ...prev, name: nameErr, email: emailErr, message: messageErr }))
 
     if (nameErr || emailErr || messageErr) return
-    setSubmitted(true)
+    submit('New project request — VibeAgentic website', {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      service: formData.service,
+      budget: formData.budget,
+      timeline: formData.timeline,
+      message: formData.message.trim(),
+    })
   }
 
   const handleStrategyCallSubmit = (e: React.FormEvent) => {
@@ -131,7 +156,14 @@ export function ModalManager() {
     setErrors((prev) => ({ ...prev, name: nameErr, email: emailErr, date: dateErr }))
 
     if (nameErr || emailErr || dateErr) return
-    setSubmitted(true)
+    submit('New strategy call booking — VibeAgentic website', {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      topic: formData.topic,
+      date: formData.date,
+      time: formData.time,
+      notes: formData.message.trim() || '—',
+    })
   }
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -338,11 +370,19 @@ export function ModalManager() {
                     )}
                   </div>
 
+                  {sendError && (
+                    <span className="flex items-center gap-1 text-xs text-red-400">
+                      <AlertCircle className="size-3.5 shrink-0" />
+                      {sendError}
+                    </span>
+                  )}
+
                   <button
                     type="submit"
-                    className="mt-2 flex w-full items-center justify-center rounded-full bg-white py-3.5 text-sm font-bold text-[#020912] transition-all hover:bg-[#eaf8fc] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
+                    disabled={sending}
+                    className="disabled:opacity-70 disabled:cursor-wait mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-sm font-bold text-[#020912] transition-all hover:bg-[#eaf8fc] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
                   >
-                    Submit Project Details
+                    {sending ? <><Loader2 className="size-4 animate-spin" /> Sending...</> : 'Submit Project Details'}
                   </button>
                 </form>
               </div>
@@ -535,11 +575,19 @@ export function ModalManager() {
                     />
                   </div>
 
+                  {sendError && (
+                    <span className="flex items-center gap-1 text-xs text-red-400">
+                      <AlertCircle className="size-3.5 shrink-0" />
+                      {sendError}
+                    </span>
+                  )}
+
                   <button
                     type="submit"
-                    className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-sm font-bold text-[#020912] transition-all hover:bg-[#eaf8fc] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
+                    disabled={sending}
+                    className="disabled:opacity-70 disabled:cursor-wait mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-white py-3.5 text-sm font-bold text-[#020912] transition-all hover:bg-[#eaf8fc] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
                   >
-                    Confirm & Reserve Call Slot <Calendar className="size-4" />
+                    {sending ? <><Loader2 className="size-4 animate-spin" /> Sending...</> : <>Confirm & Reserve Call Slot <Calendar className="size-4" /></>}
                   </button>
                 </form>
               </div>

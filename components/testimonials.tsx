@@ -10,7 +10,7 @@ const reviews = [
     title: 'CTO • HealthTech Inc',
     logo: '/health-review.jpg',
     company: 'HealthTech Inc',
-    quote: 'CodAgentic automated our patient support workflow and reduced manual work by over 60%. The team delivered exactly what they promised with zero downtime.',
+    quote: 'VibeAgentic automated our patient support workflow and reduced manual work by over 60%. The team delivered exactly what they promised with zero downtime.',
   },
   {
     name: 'Michael Chen',
@@ -40,7 +40,7 @@ export function Testimonials() {
             Trusted by teams building with AI
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            Companies rely on CodAgentic to automate workflows, build custom AI systems, and scale business operations.
+            Companies rely on VibeAgentic to automate workflows, build custom AI systems, and scale business operations.
           </p>
         </Reveal>
 

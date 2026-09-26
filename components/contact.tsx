@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, AlertCircle, RotateCcw } from 'lucide-react'
+import { Check, AlertCircle, RotateCcw, Loader2 } from 'lucide-react'
 import { Reveal } from '@/components/reveal'
+import { sendForm, CONTACT_EMAIL } from '@/lib/send-form'
 import * as React from 'react'
 
 const inputBaseClass =
@@ -10,6 +11,8 @@ const inputBaseClass =
 
 export function Contact() {
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState('')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -102,7 +105,7 @@ export function Contact() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const nameErr = validateName(formData.name)
@@ -116,11 +119,25 @@ export function Contact() {
       return
     }
 
-    setSent(true)
+    setSending(true)
+    setSendError('')
+    try {
+      await sendForm('New contact request — VibeAgentic website', {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+      })
+      setSent(true)
+    } catch {
+      setSendError(`Something went wrong. Please try again or email us at ${CONTACT_EMAIL}.`)
+    } finally {
+      setSending(false)
+    }
   }
 
   const handleReset = () => {
     setSent(false)
+    setSendError('')
     setFormData({ name: '', email: '', message: '' })
     setErrors({ name: '', email: '', message: '' })
     setTouched({ name: false, email: false, message: false })
@@ -254,11 +271,25 @@ export function Contact() {
                     )}
                   </div>
 
+                  {sendError && (
+                    <span className="flex items-center gap-1 text-xs text-red-400">
+                      <AlertCircle className="size-3.5 shrink-0" />
+                      {sendError}
+                    </span>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full py-3.5 px-6 rounded-full font-extrabold text-sm text-[#020912] bg-white transition-all duration-300 shadow-[0_4px_20px_rgba(255,255,255,0.06)] hover:bg-gradient-to-r hover:from-white hover:to-[#d0f5fc] hover:shadow-[0_0_24px_rgba(0,180,204,0.25)] hover:-translate-y-[2px] active:translate-y-0 flex items-center justify-center gap-1.5 cursor-pointer"
+                    disabled={sending}
+                    className="disabled:opacity-70 disabled:cursor-wait w-full py-3.5 px-6 rounded-full font-extrabold text-sm text-[#020912] bg-white transition-all duration-300 shadow-[0_4px_20px_rgba(255,255,255,0.06)] hover:bg-gradient-to-r hover:from-white hover:to-[#d0f5fc] hover:shadow-[0_0_24px_rgba(0,180,204,0.25)] hover:-translate-y-[2px] active:translate-y-0 flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    Submit Request
+                    {sending ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" /> Sending...
+                      </>
+                    ) : (
+                      'Submit Request'
+                    )}
                   </button>
                 </form>
               )}
