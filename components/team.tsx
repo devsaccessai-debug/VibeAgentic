@@ -55,8 +55,8 @@ const teamMembers: TeamMember[] = [
   {
     name: 'Abdul Manan',
     role: 'Junior AI Engineer',
-    image: '/Manaan.png',
-    objectPosition: 'object-top',
+    image: '/manan.jpg',
+    objectPosition: 'object-[center_15%]',
   },
   {
     name: 'Muhammad Salman',
