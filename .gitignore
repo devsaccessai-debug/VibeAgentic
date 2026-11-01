@@ -17,3 +17,7 @@ dist/
 *.log
 # Design reference, not part of the site
 referencevideo.mp4
+
+# Environment files
+.env
+.env.*
